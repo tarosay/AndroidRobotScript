@@ -1,2 +1,2 @@
 #This is URL with the file that specifies the robot script. 
-http://x
+http://dl.dropbox.com/u/14702102/luaridapublic/lua/rbscript.add
