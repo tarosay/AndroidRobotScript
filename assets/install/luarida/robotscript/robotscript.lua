@@ -9,6 +9,7 @@ filedowmload={}    --URLからファイルをDown Loadします
 readLastData={}   --最後に動作させたデータを読み出します
 savedata={}          --読み込んだurlとファイル名データを保存します
 --グローバル変数宣言----------------------
+Title = "Robot Script Loader Ver 1.1"
 RbModulePath = system.getAppPath().."/rbmodule.txt"
 RbLastFilename = system.getAppPath().."/rblastdata.txt"
 RbLast = { moduleURL="error", scriptURL="error", scriptname="robot.lua" }
@@ -183,6 +184,8 @@ end
 --メインプログラム
 ------------------------------------------
 function main()
+
+	toast( Title )
 	system.setSleep(0) --スリープしない
 
 	--最後に動作させたデータを読み出します
