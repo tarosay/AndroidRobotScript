@@ -1,5 +1,5 @@
 ------------------------------------------
--- Robot Script Loader Ver 1.0
+-- Robot Script Loader Ver 1.1
 ------------------------------------------
 --関数宣言--------------------------------
 main={}                  --mainメソッド
@@ -84,13 +84,28 @@ local fp
 end
 ------------------------------------------
 -- ファイルから#で始まらない1行を読み込みます
+-- cre= 0:読み込むデータが無ければエラーで終了, 1:無ければ仮生成する
 ------------------------------------------
-function readURL( filename )
+function readURL( filename, cre)
 local fp
 local url = "error"
 	fp = io.open( filename, "r" )
 	if( not(fp) )then
-		toast( filename..":Open Error" )
+		if( cre==1 )then
+			--ファイルが無かったので、自動生成します
+			fp = io.open( filename, "w+" )
+			if( not(fp) )then
+				dialog( RbLastFilename.." がオープンできません","変更しないで終了します", 1 )
+			else
+				url = "http://192.168.1.100/robottest.lua"
+				fp:write( "#This is URL with the file that specifies the robot script.".."\n" )
+				fp:write( url.."\n" )
+				io.flush()
+				io.close( fp )
+			end
+		else
+			toast( filename..":Open Error" )
+		end
 		return url
 	end
 	
@@ -177,7 +192,7 @@ function main()
 	end
 
 	--RB-Moduleから読み込むスクリプトのURLを書いたファイルのURLを読み込みます
-	local urlofurl = readURL(RbModulePath)
+	local urlofurl = readURL(RbModulePath, 1)
 	--dialog( "urlofurl", urlofurl, 1 )
 	if( urlofurl=="error" )then
 		if( RbLast.moduleURL=="error" )then
@@ -200,7 +215,7 @@ function main()
 	end
 
 	--filenameからロボットスクリプトのURLを読み込みます
-	local urlofscript = readURL(urloffilename)
+	local urlofscript = readURL(urloffilename, 0)
 	--dialog( "urlofscript", urlofscript, 1 )
 	if( urlofscript=="error" )then
 		if( urloffilename==RbLast.scriptURL )then
@@ -209,7 +224,7 @@ function main()
 			system.exit()	--終了します
 		else
 			--今度はRbLast.scriptURLを読み込みます
-			urlofscript = readURL(RbLast.scriptURL)
+			urlofscript = readURL(RbLast.scriptURL, 0)
 			if(urlofscript=="error" )then
 				dialog( "" , "エラーが発生したので終了します", 1 )
 				system.exit()	--終了します
@@ -223,8 +238,6 @@ function main()
 	if( filename=="error" )then
 		filename = RbLast.scriptname
 	end
-	
-	--dialog( "2["..urlofurl.."]["..urlofscript.."]", "["..filename.."]", 1 )
 
 	--読み込んだurlとファイル名データを保存します
 	savedata( urlofurl, urlofscript, filename )

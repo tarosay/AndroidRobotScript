@@ -256,7 +256,7 @@ public class RobotScriptActivity extends Activity {
     //**************************************************
     public void ExitByForce(){
         //****** ã≠êßèIóπ *******
-        //System.exit(RESULT_OK);
+        System.exit(RESULT_OK);
     }
 
 	@Override
