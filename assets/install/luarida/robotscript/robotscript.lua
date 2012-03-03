@@ -58,7 +58,6 @@ local fp
 			dialog( RbLastFilename.." がオープンできません","変更しないで終了します", 1 )
 			return -1
 		else
-			--dialog( "0["..RbLast.moduleURL.."]["..RbLast.scriptURL.."]", "["..RbLast.scriptname.."]", 1 )
 			fp:write( RbLast.moduleURL.."\n" )
 			fp:write( RbLast.scriptURL.."\n" )
 			fp:write( RbLast.scriptname.."\n" )
@@ -80,7 +79,6 @@ local fp
 		RbLast.scriptname = str
 		io.close(fp)
 	end
-	--dialog( "1["..RbLast.moduleURL.."]["..RbLast.scriptURL.."]", "["..RbLast.scriptname.."]", 1 )
 	return 0
 end
 ------------------------------------------
@@ -98,7 +96,7 @@ local url = "error"
 			if( not(fp) )then
 				dialog( RbLastFilename.." がオープンできません","変更しないで終了します", 1 )
 			else
-				url = "http://192.168.1.100/robottest.lua"
+				url = "http://192.168.1.100/rbscript.add"
 				fp:write( "#This is URL with the file that specifies the robot script.".."\n" )
 				fp:write( url.."\n" )
 				io.flush()
@@ -196,7 +194,6 @@ function main()
 
 	--RB-Moduleから読み込むスクリプトのURLを書いたファイルのURLを読み込みます
 	local urlofurl = readURL(RbModulePath, 1)
-	--dialog( "urlofurl", urlofurl, 1 )
 	if( urlofurl=="error" )then
 		if( RbLast.moduleURL=="error" )then
 			dialog( "" , "エラーが発生したので終了します", 1 )
@@ -207,7 +204,6 @@ function main()
 	end
 	--読み込むスクリプトのURLを書いたファイルのURLをダウンロードします
 	local urloffilename = filedowmload( urlofurl )
-	--dialog( "urloffilename", urloffilename, 1 )
 	if( urloffilename=="error" )then
 		if( RbLast.scriptURL=="error" )then
 			dialog( "" , "エラーが発生したので終了します", 1 )
@@ -219,7 +215,6 @@ function main()
 
 	--filenameからロボットスクリプトのURLを読み込みます
 	local urlofscript = readURL(urloffilename, 0)
-	--dialog( "urlofscript", urlofscript, 1 )
 	if( urlofscript=="error" )then
 		if( urloffilename==RbLast.scriptURL )then
 			--失敗したURLがRbLast.scriptURLと同じであれば終了します
@@ -237,7 +232,6 @@ function main()
 
 	--ロボットスクリプトをダウンロードします
 	local filename = filedowmload( urlofscript )
-	--dialog( "filename", filename, 1 )
 	if( filename=="error" )then
 		filename = RbLast.scriptname
 	end
